@@ -33,7 +33,17 @@ async function run() {
 
     const servicesCollection = client.db('serviceReviewDB').collection('services')
 
-
+    // get all service from db
+    app.get('/services', async(req, res)=>{
+      const email = req.query.email;
+      let query = {};
+      if(email){
+        query = { userEmail: email}
+      }
+      const cursor = servicesCollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    })
 
     // only 6 service get into the db
     app.get('/limitService', async(req, res)=>{
