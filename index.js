@@ -30,6 +30,17 @@ async function run() {
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
+
+    const servicesCollection = client.db('serviceReviewDB').collection('services')
+
+
+
+    // only 6 service get into the db
+    app.get('/limitService', async(req, res)=>{
+      const cursor = servicesCollection.find().limit(6)
+      const result= await cursor.toArray();
+      res.send(result)
+    })
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
