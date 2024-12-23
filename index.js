@@ -32,6 +32,7 @@ async function run() {
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
 
     const servicesCollection = client.db('serviceReviewDB').collection('services')
+    const reviewsCollection = client.db('serviceReviewDB').collection('reviews')
 
     // new service post in db
     app.post('/services', async(req, res)=>{
@@ -65,6 +66,13 @@ async function run() {
       const query = {_id: new ObjectId(id)}
       const result = await servicesCollection.findOne(query);
       res.send(result);
+    })
+
+    // post a review
+    app.post('/reviews', async(req, res)=>{
+      const newReview = req.body;
+      const result = await reviewsCollection.insertOne(newReview);
+      res.send(result)
     })
   } finally {
     // Ensures that the client will close when you finish/error
