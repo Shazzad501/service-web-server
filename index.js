@@ -33,6 +33,13 @@ async function run() {
 
     const servicesCollection = client.db('serviceReviewDB').collection('services')
 
+    // new service post in db
+    app.post('/services', async(req, res)=>{
+      const newService = req.body;
+      const result = await servicesCollection.insertOne(newService);
+      res.send(result);
+    })
+
     // get all service from db
     app.get('/services', async(req, res)=>{
       const email = req.query.email;
