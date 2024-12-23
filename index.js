@@ -74,6 +74,13 @@ async function run() {
       const result = await reviewsCollection.insertOne(newReview);
       res.send(result)
     })
+
+    // get review by spacifice service
+    app.get('/reviews/:serviceId', async(req, res)=>{
+      const { serviceId } = req.params;
+      const reviews = await reviewsCollection.find({ serviceId: serviceId }).toArray();
+      res.send(reviews);
+    })
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
