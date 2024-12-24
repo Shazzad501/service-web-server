@@ -121,6 +121,22 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     })
+
+    // update a review by id
+    app.put('/reviews/:id', async(req, res)=>{
+      const id = req.params.id;
+      const filterd = {_id: new ObjectId(id)};
+      const options = {upsert: true};
+      const updateReview = req.body;
+      const review={
+        $set: {
+          text:updateReview.text,
+          rating:updateReview.rating, 
+        }
+      }
+      const result = await reviewsCollection.updateOne(filterd, review, options);
+      res.send(result) 
+    })
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
