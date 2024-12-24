@@ -82,11 +82,19 @@ async function run() {
           website:updateService.website, 
           description:updateService.description, 
           category:updateService.category, 
-          price:updateService.priceprice
+          price:updateService.price
         }
       }
       const result = await servicesCollection.updateOne(filterd,service, options);
       res.send(result)
+    })
+
+    // Delete a service by id
+    app.delete('/services/:id', async(req, res)=>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await servicesCollection.deleteOne(query);
+      res.send(result);
     })
 
     // post a review
