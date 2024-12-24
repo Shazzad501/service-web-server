@@ -68,6 +68,27 @@ async function run() {
       res.send(result);
     })
 
+    // update a service by id
+    app.put('/services/:id', async(req, res)=>{
+      const id = req.params.id;
+      const filterd = {_id: new ObjectId(id)};
+      const options = {upsert: true};
+      const updateService = req.body;
+      const service={
+        $set: {
+          serviceImage:updateService.serviceImage,
+          serviceTitle:updateService.serviceTitle, 
+          companyName:updateService.companyName, 
+          website:updateService.website, 
+          description:updateService.description, 
+          category:updateService.category, 
+          price:updateService.priceprice
+        }
+      }
+      const result = await servicesCollection.updateOne(filterd,service, options);
+      res.send(result)
+    })
+
     // post a review
     app.post('/reviews', async(req, res)=>{
       const newReview = req.body;
