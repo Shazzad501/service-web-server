@@ -110,6 +110,17 @@ async function run() {
       const reviews = await reviewsCollection.find({ serviceId: serviceId }).toArray();
       res.send(reviews);
     })
+
+    // get review by user email
+    app.get('/reviews', async(req, res)=>{
+      const email = req.query.email;
+      if(email){
+        query = { userEmail: email}
+      }
+      const cursor = reviewsCollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    })
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
