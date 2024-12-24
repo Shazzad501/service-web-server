@@ -12,6 +12,7 @@ app.use(express.json())
 
 
 
+
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.wlddb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -34,6 +35,7 @@ async function run() {
     const servicesCollection = client.db('serviceReviewDB').collection('services')
     const reviewsCollection = client.db('serviceReviewDB').collection('reviews')
 
+
     // new service post in db
     app.post('/services', async(req, res)=>{
       const newService = req.body;
@@ -43,12 +45,16 @@ async function run() {
 
     // get all service from db
     app.get('/services', async(req, res)=>{
+      const cursor = servicesCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    })
+
+    // get service by email
+    app.get('/services', async(req, res)=>{
       const email = req.query.email;
-      let query = {};
-      if(email){
-        query = { userEmail: email}
-      }
-      const cursor = servicesCollection.find(query);
+      const query = {userEmail: email};
+      const cursor = servicesCollection.find(query)
       const result = await cursor.toArray();
       res.send(result);
     })
@@ -114,9 +120,7 @@ async function run() {
     // get review by user email
     app.get('/reviews', async(req, res)=>{
       const email = req.query.email;
-      if(email){
-        query = { userEmail: email}
-      }
+      const query = { userEmail: email}
       const cursor = reviewsCollection.find(query);
       const result = await cursor.toArray();
       res.send(result);
