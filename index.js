@@ -101,12 +101,12 @@ async function run() {
     })
 
     // get service by email
-    app.get('/services', async(req, res)=>{
-      const email = req.query.email;
-      const query = {userEmail: email};
-      const result = await servicesCollection.find(query).toArray();
-      res.send(result);
-    })
+    // app.get('/services', async(req, res)=>{
+    //   const email = req.query.email;
+    //   const query = email ? {userEmail: email} : {};
+    //   const result = await servicesCollection.find(query).toArray();
+    //   res.send(result);
+    // })
 
     // only 6 service get into the db
     app.get('/limitService', async(req, res)=>{
