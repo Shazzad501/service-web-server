@@ -175,6 +175,12 @@ async function run() {
       res.send(result);
     })
 
+    // get all review 
+    app.get('/all-review', async(req, res)=>{
+      const result =  await reviewsCollection.find().toArray();
+      res.send(result);
+    })
+
     // update a review by id
     app.put('/reviews/:id', verifyToken, async(req, res)=>{
       const id = req.params.id;
